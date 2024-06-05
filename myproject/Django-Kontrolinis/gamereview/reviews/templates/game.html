@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="col-md-4">
+      <h1>{{ game.title }}</h1>
+      <p><strong>Publisher:</strong> <a href="{% url 'publisher' game.publisher.pk %}">{{ game.publisher }}</a></p>
+      <p><strong>Genre:</strong> {{ game.genre.all|join:", " }}</p>
+      <p><strong>Description:</strong> {{ game.summary }}</p>
+      {% if game.cover %}
+        <img src="{{ game.cover.url }}" alt="{{ game.title }} cover" />
+      {% else %}
+        <p>No cover image available.</p>
+      {% endif %}
+      <br><br>
+      
+      <h4>Reviews:</h4>
+      {% if game.gamereviews.all %}
+        {% for review in game.gamereviews.all %}
+          <hr> 
+          <strong>{{ review.reviewer.username }}</strong>, <em>{{ review.date_created }}</em>
+          <p>{{ review.content }}</p>
+          <h5>{{ review.rating }} / 100</h5>
+        {% endfor %}
+      {% else %}
+        <p>Game doesn't have reviews</p>
+      {% endif %}
+      <br><br>
+      <hr> 
+      {% if user.is_authenticated %}
+        <form action="" method="post">
+          {% csrf_token %}
+          {{ form }}
+          <input type="submit" value="Submit Review">
+        </form>
+      {% else %}
+        <p>Please <a href="{% url 'login' %}">log in</a> to submit a review.</p>
+      {% endif %}
+  </div>
+{% endblock %}
+

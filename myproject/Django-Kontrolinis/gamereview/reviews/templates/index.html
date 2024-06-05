@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="container">
+      <h1>Welcome to the Game Review Site</h1>
+      
+      <h2>Top Rated Game</h2>
+      {% if best_game %}
+        <div class="best-game">
+          <h3>{{ best_game.title }}</h3>
+          {% if best_game.cover %}
+            <img src="{{ best_game.cover.url }}" alt="{{ best_game.title }} cover" />
+          {% else %}
+            <p>No cover image available.</p>
+          {% endif %}
+          <p><strong>Publisher:</strong> <a href="{% url 'publisher' best_game.publisher.pk %}">{{ best_game.publisher }}</a></p>
+          <p><strong>Genre:</strong> {{ best_game.genre.all|join:", " }}</p>
+          <p><strong>Description:</strong> {{ best_game.summary }}</p>
+          
+          <h4>Latest Top Review:</h4>
+          <hr>
+          <strong>{{ best_review.reviewer.username }}</strong>, <em>{{ best_review.date_created }}</em>
+          <p>{{ best_review.content }}</p>
+          <h5>{{ best_review.rating }} / 100</h5>
+        </div>
+      {% else %}
+        <p>No reviews available.</p>
+      {% endif %}
+  </div>
+{% endblock %}
+

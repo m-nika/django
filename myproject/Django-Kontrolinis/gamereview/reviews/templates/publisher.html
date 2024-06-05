@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+    <div class="container author">
+        <h4>{{ publisher.name }}</h4>
+        <hr/>
+        <br/>
+        <h5>We have reviewed these games from {{ publisher.name }}:</h5>
+        <ul>
+            {% for game in publisher.games.all %}
+                <li><a href="{% url 'game' game.pk %}">{{ game.title }}</a></li>  
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}
